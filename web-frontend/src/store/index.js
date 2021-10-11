@@ -40,6 +40,9 @@ const createStore = () => {
       showConstellationsLinesButton: false,
       showConstellationsArtButton: false,
       showDeepSkyObjectsButton: false,
+      showAtmosphereButton: false,
+      showLandscapeButton: false,
+      showNightmodeButton: false,
 
       showSidePanel: false,
 
