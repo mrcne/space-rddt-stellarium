@@ -31,9 +31,9 @@
 
     <bottom-button :label="$t('I don\'t like rubber ducks')"
                    :img="require('@/assets/images/duck1.svg')"
-                   img_alt="Constellations Button"
-                   :toggled="$store.state.stel.constellations.lines_visible"
-                   @clicked="(b) => { $stel.core.constellations.lines_visible = b; $stel.core.constellations.lines_visible = b }">
+                   img_alt="Hide Ducks"
+                   :toggled="$store.state.stel.satellites.symbols_always_visible"
+                   @clicked="(b) => { $stel.core.satellites.symbols_always_visible = b; $stel.core.satellites.symbols_always_visible = b }">
     </bottom-button>
     <bottom-button :label="$t('Constellations')"
                 v-if="$store.state.showConstellationsLinesButton !== false"

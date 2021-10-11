@@ -50,6 +50,8 @@ typedef struct satellites {
     bool    loaded;
     int     update_pos; // Index of the position for iterative update.
     bool    visible;
+    bool    debris_visible;
+    bool    symbols_always_visible;
     double  hints_mag_offset;
     bool    hints_visible;
 
@@ -71,6 +73,8 @@ static int satellites_init(obj_t *obj, json_value *args)
     assert(!g_satellites);
     g_satellites = sats;
     sats->visible = true;
+    sats->debris_visible = true;
+    sats->symbols_always_visible = true;
     sats->hints_visible = true;
     return 0;
 }
@@ -652,10 +656,11 @@ static int satellite_render(const obj_t *obj, const painter_t *painter_)
         core_report_luminance_in_fov(model_size * 0.005, false);
     }
 
+    int sat_symbol = SYMBOL_SPACE_DEBRIS;
     // Render symbol if needed.
-    if (true || (g_satellites->hints_visible && (selected || vmag <= hints_limit_mag))) {
+    if (g_satellites->symbols_always_visible || (g_satellites->hints_visible && (selected || vmag <= hints_limit_mag))) {
         vec4_copy(label_color, color);
-        symbols_paint(&painter, SYMBOL_SPACE_DEBRIS, p_win,
+        symbols_paint(&painter, sat_symbol, p_win,
                       VEC(24.0, 24.0), selected ? white : color, 0.0);
     }
 
@@ -797,6 +802,8 @@ static obj_klass_t satellites_klass = {
     .list           = satellites_list,
     .attributes = (attribute_t[]) {
         PROPERTY(visible, TYPE_BOOL, MEMBER(satellites_t, visible)),
+        PROPERTY(debris_visible, TYPE_BOOL, MEMBER(satellites_t, debris_visible)),
+        PROPERTY(symbols_always_visible, TYPE_BOOL, MEMBER(satellites_t, symbols_always_visible)),
         PROPERTY(hints_mag_offset, TYPE_FLOAT,
                  MEMBER(satellites_t, hints_mag_offset)),
         PROPERTY(hints_visible, TYPE_BOOL, MEMBER(satellites_t, hints_visible)),
