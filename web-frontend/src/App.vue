@@ -97,6 +97,7 @@
       </div>
     </v-container>
   </v-main>
+  <cookie-law theme="dark-lime"></cookie-law>
 
 </v-app>
 
@@ -109,6 +110,7 @@ import Gui from '@/components/gui.vue'
 import GuiLoader from '@/components/gui-loader.vue'
 import swh from '@/assets/sw_helpers.js'
 import Moment from 'moment'
+import CookieLaw from 'vue-cookie-law'
 
 export default {
   data (context) {
@@ -127,7 +129,7 @@ export default {
       dataSourceInitDone: false
     }
   },
-  components: { Gui, GuiLoader },
+  components: { Gui, GuiLoader, CookieLaw },
   methods: {
     getPluginsMenuItems: function () {
       let res = []
@@ -395,6 +397,10 @@ html, body, #app {
 .theme--dark.v-expansion-panels .v-expansion-panel{
   background: none!important;
   border: none!important;
+}
+
+.Cookie.Cookie {
+  position: inherit;
 }
 
 @keyframes rubber-duck-spin {
