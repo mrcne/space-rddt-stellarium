@@ -7,7 +7,7 @@ Our project’s goal is to counter the “out of sight, out of mind” careless 
 
 See it here:
 
-https://theduckening.earth/
+https://theduckening.space/
 
 
 ![The Duckening](./images/duckening-screenshot.png)

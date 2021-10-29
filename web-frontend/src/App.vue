@@ -45,6 +45,12 @@
               <a target="_blank" href="https://data.nasa.gov/dataset/Space-Debris-Elimination-SpaDE-/x9yp-8wsa">https://data.nasa.gov/dataset/Space-Debris-Elimination-SpaDE-/x9yp-8wsa</a>
             </v-expansion-panel-content>
           </v-expansion-panel>
+          <v-expansion-panel>
+            <v-expansion-panel-header>It looks like Stellarium Web</v-expansion-panel-header>
+            <v-expansion-panel-content>
+              Because it's based on <a target="_blank" href="https://github.com/Stellarium/stellarium-web-engine">Stellarium Web Engine</a> and licenced under AGPL-3.0. Source code is <a target="_blank" href="https://github.com/mrcne/space-rddt-stellarium">here</a>
+            </v-expansion-panel-content>
+          </v-expansion-panel>
         </v-expansion-panels>
         <template v-for="(item,i) in menuItems">
           <template v-if="$store.state[item.store_show_menu_item] === false"></template>
