@@ -117,6 +117,7 @@ const swh = {
 
       // Solar System
       Asa: 'artificial_satellite',
+      AsD: 'space_debris',
       Moo: 'moon',
       Sun: 'sun',
       Pla: 'planet',

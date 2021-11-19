@@ -278,6 +278,8 @@ export default {
           that.$stel.setFont('regular', process.env.BASE_URL + 'fonts/Roboto-Regular.ttf', 1.38)
           that.$stel.setFont('bold', process.env.BASE_URL + 'fonts/Roboto-Bold.ttf', 1.38)
           that.$stel.core.constellations.show_only_pointed = false
+          that.$stel.core.planets.hints_visible = false
+          that.$stel.core.stars.hints_visible = false
 
           that.setStateFromQueryArgs()
           that.guiComponent = 'Gui'
@@ -302,8 +304,7 @@ export default {
             core.planets.addDataSource({ url: process.env.BASE_URL + 'skydata/surveys/sso/moon', key: 'default' })
             core.comets.addDataSource({ url: process.env.BASE_URL + 'skydata/CometEls.txt', key: 'mpc_comets' })
             // core.satellites.addDataSource({ url: process.env.BASE_URL + 'skydata/tle_satellite.jsonl.gz', key: 'jsonl/sat' })
-            // core.satellites.addDataSource({ url: process.env.BASE_URL + 'skydata/tle_debris.jsonl.gz', key: 'jsonl/sat' })
-            core.satellites.addDataSource({ url: 'https://space-rddt.s3.eu-west-1.amazonaws.com/tle_debris.jsonl.gz', key: 'jsonl/sat' })
+            core.satellites.addDataSource({ url: 'https://space-rddt.s3.eu-west-1.amazonaws.com/tle_satellites_debris.jsonl.gz', key: 'jsonl/sat' })
           }
         })
       } catch (e) {

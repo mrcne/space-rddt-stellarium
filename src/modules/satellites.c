@@ -83,7 +83,7 @@ static int satellites_add_data_source(
         obj_t *obj, const char *url, const char *key)
 {
     satellites_t *sats = (void*)obj;
-    if (strcmp(key, "jsonl/sat") != 0)
+    if (strcmp(key, "jsonl/sat") != 0 && strcmp(key, "jsonl/deb") != 0)
         return -1;
     sats->jsonl_url = strdup(url);
     return 0;
@@ -613,6 +613,28 @@ static double get_model_alpha(const satellite_t *sat, const painter_t *painter,
     return smoothstep(5, 20, point_size);
 }
 
+static double transform_range(double old_value, double old_min, double old_max, double new_min, double new_max)
+{
+    return (((old_value - old_min) * (new_max - new_min)) / (old_max - old_min)) + new_min;
+}
+
+static double get_icon_size(const satellite_t *sat)
+{
+    double range, icon_size;
+    range = vec3_norm(sat->pvo[0]) * DAU2M / 1000; // Distance in km.
+    // range from 600 to 10 000 km
+    // size from 8 to 24 px
+    icon_size = transform_range(1 / range, 1.0/10000, 1.0/600, 8, 30);
+    if (icon_size < 8) {
+        icon_size = 8;
+    }
+    else if (icon_size > 30) {
+        icon_size = 30;
+    }
+
+    return icon_size;
+}
+
 /*
  * Render an individual satellite.
  * Note: return 1 if the satellite is actually visible on screen.
@@ -624,13 +646,16 @@ static int satellite_render(const obj_t *obj, const painter_t *painter_)
     point_t point;
     double color[4], model_alpha, model_size;
     double radius;
+    double icon_size;
     char buf[256];
-    const double label_color[4] = RGBA(242, 200, 2, 205);
+    const double label_color[4] = RGBA(124, 205, 124, 205);
+    const double label_color_debris[4] = RGBA(242, 200, 2, 205);
     const double white[4] = RGBA(255, 255, 255, 255);
     satellite_t *sat = (satellite_t*)obj;
     const bool selected = core->selection && obj == core->selection;
     const double hints_limit_mag = painter.hints_limit_mag +
                                    g_satellites->hints_mag_offset - 2.5;
+    const bool is_debris = strcmp("AsD", sat->obj.type) == 0;
 
     satellite_update(sat, painter.obs);
     vmag = sat->vmag;
@@ -656,12 +681,22 @@ static int satellite_render(const obj_t *obj, const painter_t *painter_)
         core_report_luminance_in_fov(model_size * 0.005, false);
     }
 
-    int sat_symbol = SYMBOL_SPACE_DEBRIS;
+    int sat_symbol = SYMBOL_ARTIFICIAL_SATELLITE;
+    if (is_debris) {
+        sat_symbol = SYMBOL_SPACE_DEBRIS;
+    }
     // Render symbol if needed.
     if (g_satellites->symbols_always_visible || (g_satellites->hints_visible && (selected || vmag <= hints_limit_mag))) {
-        vec4_copy(label_color, color);
+        if (is_debris) {
+            vec4_copy(label_color_debris, color);
+        } else {
+            vec4_copy(label_color, color);
+        }
+
+        icon_size = get_icon_size(sat);
+        // angle is from 0 to 6.28
         symbols_paint(&painter, sat_symbol, p_win,
-                      VEC(24.0, 24.0), selected ? white : color, 0.0);
+                      VEC(icon_size, icon_size), selected ? white : color, 0);
     }
 
     point = (point_t) {
