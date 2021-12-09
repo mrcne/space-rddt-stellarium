@@ -304,7 +304,7 @@ export default {
             core.planets.addDataSource({ url: process.env.BASE_URL + 'skydata/surveys/sso/moon', key: 'default' })
             core.comets.addDataSource({ url: process.env.BASE_URL + 'skydata/CometEls.txt', key: 'mpc_comets' })
             // core.satellites.addDataSource({ url: process.env.BASE_URL + 'skydata/tle_satellite.jsonl.gz', key: 'jsonl/sat' })
-            core.satellites.addDataSource({ url: 'https://space-rddt.s3.eu-west-1.amazonaws.com/tle_satellites_debris.jsonl.gz', key: 'jsonl/sat' })
+            core.satellites.addDataSource({ url: 'https://api.theduckening.space/tle_satellites_debris.jsonl.gz', key: 'jsonl/sat' })
           }
         })
       } catch (e) {
